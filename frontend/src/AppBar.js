@@ -4,7 +4,6 @@ import {
   AppBar,
   Tabs,
   Tab,
-  Typography,
   withStyles,
   Button,
   Toolbar
@@ -14,14 +13,6 @@ import StarIcon from "@material-ui/icons/Star";
 import EventIcon from "@material-ui/icons/Event";
 
 const API_HOST = process.env.REACT_APP_API_HOST;
-
-function TabContainer(props) {
-  return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
-      {props.children}
-    </Typography>
-  );
-}
 
 const styles = theme => ({
   root: {
@@ -58,29 +49,29 @@ class ScrollableTabsButtonForce extends React.Component {
     return (
       <div className={classes.root}>
         <AppBar position="static" color="default">
-          <Toolbar>
-            <Tabs
-              value={value}
-              onChange={this.handleChange}
-              scrollable
-              scrollButtons="on"
-              indicatorColor="primary"
-              textColor="primary"
-              classes={{
-                flexContainer: classes.flexContainer,
-                root: classes.tabs
-              }}
-            >
-              <Tab label="GAMES" icon={<ListIcon />} value="/games" />
-              <Tab label="LEADERS" icon={<StarIcon />} value="/leaders" />
-              <Tab
-                label="TOURNAMENTS"
-                icon={<EventIcon />}
-                value="/tournaments"
-              />
-            </Tabs>
+          <Toolbar style={{ justifyContent: "center" }}>
             <Button href={`${API_HOST}/auth/google`}>Login</Button>
           </Toolbar>
+          <Tabs
+            value={value}
+            onChange={this.handleChange}
+            scrollable
+            scrollButtons="auto"
+            indicatorColor="primary"
+            textColor="primary"
+            classes={{
+              flexContainer: classes.flexContainer,
+              root: classes.tabs
+            }}
+          >
+            <Tab label="GAMES" icon={<ListIcon />} value="/games" />
+            <Tab label="LEADERS" icon={<StarIcon />} value="/leaders" />
+            <Tab
+              label="TOURNAMENTS"
+              icon={<EventIcon />}
+              value="/tournaments"
+            />
+          </Tabs>
         </AppBar>
       </div>
     );
