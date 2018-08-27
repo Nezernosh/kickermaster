@@ -23,7 +23,7 @@ class UserPage extends Component {
   @computed
   get user() {
     const { match } = this.props;
-    const userId = parseInt(match.params.id, 10);
+    const userId = parseInt(match.params.id);
     return store.getUserById(userId);
   }
 
