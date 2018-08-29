@@ -9,6 +9,7 @@ import {
   Button,
   Toolbar
 } from "@material-ui/core";
+import api from "./api";
 import ListIcon from "@material-ui/icons/List";
 import StarIcon from "@material-ui/icons/Star";
 import EventIcon from "@material-ui/icons/Event";
@@ -42,7 +43,8 @@ class ScrollableTabsButtonForce extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: this.props.location.pathname
+      value: this.props.location.pathname,
+      authorized: false
     };
   }
 
@@ -50,6 +52,18 @@ class ScrollableTabsButtonForce extends React.Component {
     this.setState({ value });
     this.props.history.push(value);
   };
+
+  async isAuthorized() {
+    try {
+      await api.get("/api/me").then(() => this.setState({ authorized: true }));
+    } catch (error) {
+      this.setState({ authorized: false });
+    }
+  }
+
+  componentDidMount() {
+    this.isAuthorized();
+  }
 
   render() {
     const { classes } = this.props;
@@ -73,13 +87,19 @@ class ScrollableTabsButtonForce extends React.Component {
             >
               <Tab label="GAMES" icon={<ListIcon />} value="/games" />
               <Tab label="LEADERS" icon={<StarIcon />} value="/leaders" />
-              <Tab
-                label="TOURNAMENTS"
-                icon={<EventIcon />}
-                value="/tournaments"
-              />
+              {this.state.authorized && (
+                <Tab
+                  label="TOURNAMENTS"
+                  icon={<EventIcon />}
+                  value="/tournaments"
+                />
+              )}
             </Tabs>
-            <Button href={`${API_HOST}/auth/google`}>Login</Button>
+            {this.state.authorized ? (
+              <Button href={`${API_HOST}/auth/logout`}>Logout</Button>
+            ) : (
+              <Button href={`${API_HOST}/auth/google`}>Login</Button>
+            )}
           </Toolbar>
         </AppBar>
       </div>
